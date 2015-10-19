@@ -3,10 +3,9 @@ extends ../layout
 block content
   include ../navbars/home
   div.container
-    h1 Sign In
-
     div.row
       div.col-md-4
+        h1 Sign In
         if error
           div.errors.alert.alert-danger(role="alert")
             li.text-danger= error

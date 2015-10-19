@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  include ../navbars/home
+  div.container
+    div.row
+      div.col-md-4
+        h1 Sign Up
+        include errors
+        form(action='/' method='POST')
+          div.form-group
+            label(for='email') Email
+            div
+              input.form-control(type='email' name='email' id='email' value=email)
+          div.form-group
+            label(for='password') Password
+            div
+              small password must be at least 6 characters long
+            div
+              input.form-control(type='password' name='password' id='password')
+            div.form-group
+            label(for='pass_confirm') Password confirmation
+            div
+              input.form-control(type='password' name='pass_confirm' id='pass_confirm')
+          div.form-group
+            input.btn.btn-primary(type='submit' value='Sign Up')
+            |   |  
+            a(href='/signin') Sign In 
+            | if you already have an account

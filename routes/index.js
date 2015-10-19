@@ -1,15 +1,19 @@
 var express = require('express');
 var router = express.Router();
-var db = require('monk')('localhost/users');
+var db = require('monk')(process.env.HOST || 'localhost/users');
 var Users = db.get('users');
 var Students = db.get('students');
 var bcrypt = require('bcrypt');
 
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Sign Up' });
+  res.redirect('/signup');
 });
 
-router.post('/', function(req, res) {
+router.get('/signup', function(req, res) {
+  res.render('pages/signup');
+})
+
+router.post('/signup', function(req, res) {
   Users.findOne({ email: req.body.email }, function(err, user) {
     var errors = [];
     if(user) {
@@ -31,7 +35,7 @@ router.post('/', function(req, res) {
       errors.push("Passwords don't match");
     }
     if(errors.length) {
-      res.render('index', { email: req.body.email, errors: errors});
+      res.render('pages/signup', { email: req.body.email, errors: errors});
     } else {
       var hash = bcrypt.hashSync(req.body.password, 8);
       Users.insert({
@@ -95,7 +99,14 @@ router.post('/dashboard', function(req, res) {
     }
     if(errors.length) {
       Users.findOne({ _id: req.session.userId }, function(err, user) {
-        res.render('pages/dashboard', { user: user, name: req.body.name, phone: req.body.phone, errors: errors});
+        Students.find({}, function(err, students) {
+        res.render('pages/dashboard', { title: 'Dashboard', 
+          students: students,
+          user: user,
+          name: req.body.name,
+          phone: req.body.phone,
+          errors: errors});
+      })
     });
     } else {
       Students.insert({
@@ -118,7 +129,7 @@ router.get('/students/:id', function(req, res) {
 
 router.get('/signout', function(req, res) {
   req.session = null;
-  res.redirect('/');
+  res.redirect('/signin');
 });
 
 module.exports = router;
