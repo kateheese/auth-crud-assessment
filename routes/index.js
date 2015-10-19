@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/signup', function(req, res) {
-  res.render('pages/signup');
+  res.render('pages/signup', {title: 'Sign Up'});
 })
 
 router.post('/signup', function(req, res) {
@@ -35,7 +35,7 @@ router.post('/signup', function(req, res) {
       errors.push("Passwords don't match");
     }
     if(errors.length) {
-      res.render('pages/signup', { email: req.body.email, errors: errors});
+      res.render('pages/signup', { title: 'Sign Up', email: req.body.email, errors: errors});
     } else {
       var hash = bcrypt.hashSync(req.body.password, 8);
       Users.insert({
@@ -61,10 +61,10 @@ router.post('/signin', function(req, res) {
         res.redirect('/dashboard');
       }
       else {
-        res.render('pages/signin', { error: "Email / password don't match" });
+        res.render('pages/signin', { title: 'Sign In', error: "Email / password don't match" });
       }
     } else {
-      res.render('pages/signin', { error: "Email / password don't match" });
+      res.render('pages/signin', { title: 'Sign In', error: "Email / password don't match" });
     }
   });
 });
