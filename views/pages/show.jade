@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+  include ../navbars/dashboard-nav
+  div.container
+    h1= student.name 
+      h3.indent Phone: 
+      span.number #{student.phone}

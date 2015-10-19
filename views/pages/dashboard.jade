@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  include ../navbars/dashboard-nav
+  div.container 
+    div.row
+      div.col-md-4
+        h1 Add Student
+        include errors
+        form(action='/dashboard' method='POST')
+          div.form-group
+            label(for='name') Name
+            div
+              input.form-control(type='text' name='name' id='name' value=name)
+          div.form-group
+            label(for='phone') Phone Number
+            div
+              input.form-control(type='tel' name='phone' id='phone' value=phone)
+          div.form-group
+            input.btn.btn-primary(type='submit' value='Add')
+      div.col-md-4 
+      div.col-md-4
+        h1 Students
+        if students
+          ul.list-group
+            each student in students
+              li.list-group-item
+                a(href='/students/' + student._id) #{student.name}
